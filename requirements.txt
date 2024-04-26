@@ -1,5 +1,5 @@
 Flask
-torch
+torch==2.2.0+cpu
 torchvision
 pillow
 gunicorn

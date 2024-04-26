@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somii's Facial Emotion Recognition App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        #upload-form {
+            margin: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label.upload-btn {
+            padding: 15px;
+            font-weight: 500;
+            background-color: navy;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button.upload-btn {
+            padding: 15px;
+            font-weight: 500;
+            background-color: navy;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .predicted-label {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Somii's Facial Emotion Recognition App</h1>
+        
+        <form id="upload-form" action="/" method="post" enctype="multipart/form-data">
+            <input type="file" id="file-input" name="file" accept="image/*" onchange="previewImage()">
+            <label for="file-input" class="upload-btn">Choose Image</label>
+            <button type="submit" class="upload-btn">Upload Image</button>
+        </form>
+    
+        <p id="error-msg" class="error">
+            {% if error %}
+                {{ error }}
+            {% endif %}
+        </p>
+    
+        {% if image %}
+            <h2 id="predicted-label" class="predicted-label">
+                {% if predicted_label %}
+                    Predicted Emotion: {{ predicted_label }}
+                {% endif %}
+            </h2>
+            <img id="uploaded-image" src="data:image/jpeg;base64,{{ image }}" width="200px" alt="Uploaded Image">
+        {% else %}
+            <img id="selected-image" src="" width="200px" alt="Selected Image">
+        {% endif %}
+    </div>
+    <script>
+        function previewImage() {
+            var fileInput = document.getElementById('file-input');
+            var selectedImage = document.getElementById('selected-image');
+
+            var file = fileInput.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                selectedImage.src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
